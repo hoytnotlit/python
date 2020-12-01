@@ -4,8 +4,8 @@ def group_count(input_list):
     """
     make this into a one line dict comprehension
     """
-    
-    group_count = { item: input_list.count(item) for item in input_list }
+
+    group_count = { item: input_list.count(item) for item in sorted(set(input_list)) }
     # group_count = {}
     # for item in input_list:
 
