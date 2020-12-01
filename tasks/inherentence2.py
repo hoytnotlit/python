@@ -21,7 +21,11 @@ class DependencyParser:
         return "parsing dependencies"
 
 
-class CustomParser:
-
+class CustomParser(PosTagger, DependencyParser):
     def pipe_parse(self):
         return self.tag_pos(), self.parse_dep()
+
+
+if __name__ == "__main__":
+    c = CustomParser()
+    print(c.pipe_parse())
