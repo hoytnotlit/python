@@ -16,5 +16,6 @@ def group_count(input_list):
 
     return group_count
 
-input_list = ["1", "2", "2", "3","3"]
-print(group_count(input_list))
+if __name__ == "__main__":
+    input_list = ["1", "2", "2", "3","3"]
+    print(group_count(input_list))
