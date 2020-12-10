@@ -42,10 +42,14 @@ def masked_mean(matrix, mask):
 
     # STEP 1: do the masking
 
-    # maybe there is something to work on here? values get masked but the matrix is 
-    # flattened to two dimensions
+    # maybe there is something to work on here? 
     mask_bool = np.array(mask, dtype=bool)
-    masked = matrix[mask_bool]
+    # values get masked but the matrix is flattened to two dimensions
+    # masked = matrix[mask_bool]
+
+    # values get masked but still need to remove rows with only 0
+    masked = np.where(mask_bool[..., None], matrix, 0)
+    print(masked)
 
     # STEP 2: do the mean
     meaned_arr = np.mean(matrix, axis=2)
@@ -59,7 +63,8 @@ def make_sample_matrices(nr_documents=2, nr_sentences=3, nr_words=4, nr_features
     matrix = np.array(
         [
             [
-                [np.random.randint(0, 10, size=nr_features) for _ in range(nr_words)]
+                [np.random.randint(0, 10, size=nr_features)
+                 for _ in range(nr_words)]
                 for _ in range(nr_sentences)
             ]
             for _ in range(nr_documents)
