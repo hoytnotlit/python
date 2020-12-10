@@ -53,22 +53,13 @@ def masked_mean(matrix, mask):
     return meaned_arr
 
 
-def test():
-    """
-    Create example M and mask matrices and pass into masked_mean
-    """
+def make_sample_matrices(nr_documents=2, nr_sentences=3, nr_words=4, nr_features=6):
 
-    # set parameters
-    nr_documents = 2
-    nr_sentences = 2
-    nr_words = 4
-    nr_features = 2
-
-    # create sample M
+    # create sample matrix
     matrix = np.array(
         [
             [
-                [np.random.rand(nr_features) for _ in range(nr_words)]
+                [np.random.randint(0, 10, size=nr_features) for _ in range(nr_words)]
                 for _ in range(nr_sentences)
             ]
             for _ in range(nr_documents)
@@ -83,7 +74,23 @@ def test():
         ]
     )
 
-    masked_mean(matrix, mask)
+    return matrix, mask
+
+
+def test():
+    """
+    Create example M and mask matrices and pass into masked_mean
+    """
+    matrix, mask = make_sample_matrices()
+    meaned_matrix = masked_mean(matrix, mask)
+
+    print("\n---BEFORE---")
+    print(matrix)
+    print("\nshape:", matrix.shape)
+
+    print("\n\n---AFTER---")
+    print(meaned_matrix)
+    print("\nshape:", meaned_matrix.shape)
 
 
 if __name__ == "__main__":
