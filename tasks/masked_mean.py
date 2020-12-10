@@ -48,18 +48,9 @@ def masked_mean(matrix, mask):
     return meaned_arr
 
 
-def test():
-    """
-    Create example M and mask matrices and pass into masked_mean
-    """
+def make_sample_matrices(nr_documents=2, nr_sentences=3, nr_words=4, nr_features=6):
 
-    # set parameters
-    nr_documents = 2
-    nr_sentences = 3
-    nr_words = 4
-    nr_features = 6
-
-    # create sample M
+    # create sample matrix
     matrix = np.array(
         [
             [
@@ -78,6 +69,14 @@ def test():
         ]
     )
 
+    return matrix, mask
+
+
+def test():
+    """
+    Create example M and mask matrices and pass into masked_mean
+    """
+    matrix, mask = make_sample_matrices()
     meaned_matrix = masked_mean(matrix, mask)
 
     print("\n---BEFORE---")
