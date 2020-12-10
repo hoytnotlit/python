@@ -42,6 +42,11 @@ def masked_mean(matrix, mask):
 
     # STEP 1: do the masking
 
+    # maybe there is something to work on here? values get masked but the matrix is 
+    # flattened to two dimensions
+    mask_bool = np.array(mask, dtype=bool)
+    masked = matrix[mask_bool]
+
     # STEP 2: do the mean
     meaned_arr = np.mean(matrix, axis=2)
 
