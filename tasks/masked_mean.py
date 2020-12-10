@@ -55,15 +55,15 @@ def test():
 
     # set parameters
     nr_documents = 2
-    nr_sentences = 2
+    nr_sentences = 3
     nr_words = 4
-    nr_features = 2
+    nr_features = 6
 
     # create sample M
     matrix = np.array(
         [
             [
-                [np.random.rand(nr_features) for _ in range(nr_words)]
+                [np.random.randint(0, 10, size=nr_features) for _ in range(nr_words)]
                 for _ in range(nr_sentences)
             ]
             for _ in range(nr_documents)
@@ -78,7 +78,15 @@ def test():
         ]
     )
 
-    masked_mean(matrix, mask)
+    meaned_matrix = masked_mean(matrix, mask)
+
+    print("\n---BEFORE---")
+    print(matrix)
+    print("\nshape:", matrix.shape)
+
+    print("\n\n---AFTER---")
+    print(meaned_matrix)
+    print("\nshape:", meaned_matrix.shape)
 
 
 if __name__ == "__main__":
