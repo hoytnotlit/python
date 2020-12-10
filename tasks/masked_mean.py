@@ -39,32 +39,47 @@ def masked_mean(matrix, mask):
     1) you are not allowed to use any loops instead you are suppose to use matrix operations
 
     """
-    pass
+
+    # STEP 1: do the masking
+
+    # STEP 2: do the mean
+    meaned_arr = np.mean(matrix, axis=2)
+
+    return meaned_arr
 
 
-nr_documents = 2
-nr_sentences = 2
-nr_words = 4
-nr_features = 2
+def test():
+    """
+    Create example M and mask matrices and pass into masked_mean
+    """
 
-M = np.array(
-    [
+    # set parameters
+    nr_documents = 2
+    nr_sentences = 2
+    nr_words = 4
+    nr_features = 2
+
+    # create sample M
+    matrix = np.array(
         [
-            [np.random.rand(nr_features) for _ in range(nr_words)]
-            for _ in range(nr_sentences)
+            [
+                [np.random.rand(nr_features) for _ in range(nr_words)]
+                for _ in range(nr_sentences)
+            ]
+            for _ in range(nr_documents)
         ]
-        for _ in range(nr_documents)
-    ]
-)
+    )
+
+    # create sample mask
+    mask = np.array(
+        [
+            [np.random.randint(0, 2, nr_words) for _ in range(nr_sentences)]
+            for _ in range(nr_documents)
+        ]
+    )
+
+    masked_mean(matrix, mask)
 
 
-mask = np.array(
-    [
-        [np.random.randint(0, 2, nr_words) for _ in range(nr_sentences)]
-        for _ in range(nr_documents)
-    ]
-)
-
-# this is maybe wrong
-meaned_arr = np.mean(M, axis=3)
-masked_arr = np.ma.array(meaned_arr, mask=mask)
+if __name__ == "__main__":
+    test()
