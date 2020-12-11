@@ -41,21 +41,11 @@ def masked_mean(matrix, mask):
     """
 
     # STEP 1: do the masking
-
-    # maybe there is something to work on here?
-    # mask_bool = np.array(mask, dtype=bool)
-    # values get masked but the matrix is flattened to two dimensions
-    # masked = matrix[mask_bool]
-
-    # values get masked but still need to remove rows with only 0
-    # masked = np.where(mask[..., None], matrix, 0)
-
-    # apply mask by replacing pads with np.nan
+    # convert 'pad' values to nan
     masked = np.where(mask[..., None], matrix, np.nan)
-    # print(masked)
 
     # STEP 2: do the mean
-    # meaned_arr = np.mean(matrix, axis=2)
+    # take mean along axis 2, ignoring nan
     meaned_arr = np.nanmean(masked, axis=2)
 
     return meaned_arr
@@ -95,7 +85,7 @@ def test():
     matrix, mask = make_sample_matrices()
     meaned_matrix = masked_mean(matrix, mask)
 
-    # print("\n===== BEFORE =====")
+    # Print out all matrices
     print("\n" + "-" * 20)
     print(f"matrix {matrix.shape}:")
     print("-" * 20)
