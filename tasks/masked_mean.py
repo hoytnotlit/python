@@ -42,29 +42,34 @@ def masked_mean(matrix, mask):
 
     # STEP 1: do the masking
 
-    # maybe there is something to work on here? 
-    mask_bool = np.array(mask, dtype=bool)
+    # maybe there is something to work on here?
+    # mask_bool = np.array(mask, dtype=bool)
     # values get masked but the matrix is flattened to two dimensions
     # masked = matrix[mask_bool]
 
     # values get masked but still need to remove rows with only 0
-    masked = np.where(mask_bool[..., None], matrix, 0)
-    print(masked)
+    # masked = np.where(mask[..., None], matrix, 0)
+
+    # apply mask by replacing pads with np.nan
+    masked = np.where(mask[..., None], matrix, np.nan)
+    # print(masked)
 
     # STEP 2: do the mean
-    meaned_arr = np.mean(matrix, axis=2)
+    # meaned_arr = np.mean(matrix, axis=2)
+    meaned_arr = np.nanmean(masked, axis=2)
 
     return meaned_arr
 
 
-def make_sample_matrices(nr_documents=2, nr_sentences=3, nr_words=4, nr_features=6):
-
+def make_sample_matrices(nr_documents=2, nr_sentences=2, nr_words=4, nr_features=6):
+    """
+    Returns sample 4D matrix and 3D mask -> (matrix, mask)
+    """
     # create sample matrix
     matrix = np.array(
         [
             [
-                [np.random.randint(0, 10, size=nr_features)
-                 for _ in range(nr_words)]
+                [np.random.randint(0, 10, size=nr_features) for _ in range(nr_words)]
                 for _ in range(nr_sentences)
             ]
             for _ in range(nr_documents)
@@ -72,12 +77,13 @@ def make_sample_matrices(nr_documents=2, nr_sentences=3, nr_words=4, nr_features
     )
 
     # create sample mask
-    mask = np.array(
-        [
-            [np.random.randint(0, 2, nr_words) for _ in range(nr_sentences)]
-            for _ in range(nr_documents)
-        ]
-    )
+    def add_pad(row):
+        idx = np.random.randint(0, len(row)) + 1
+        row[idx:] = 0
+        return row
+
+    mask = np.ones((nr_documents, nr_sentences, nr_words))
+    np.apply_along_axis(add_pad, 2, mask)
 
     return matrix, mask
 
@@ -89,13 +95,22 @@ def test():
     matrix, mask = make_sample_matrices()
     meaned_matrix = masked_mean(matrix, mask)
 
-    print("\n---BEFORE---")
+    # print("\n===== BEFORE =====")
+    print("\n" + "-" * 20)
+    print(f"matrix {matrix.shape}:")
+    print("-" * 20)
     print(matrix)
-    print("\nshape:", matrix.shape)
 
-    print("\n\n---AFTER---")
+    print("\n" + "-" * 20)
+    print(f"mask {mask.shape}:")
+    print("-" * 20)
+    print(mask)
+
+    print("\n" + "-" * 20)
+    print(f"result {meaned_matrix.shape}:")
+    print("-" * 20)
     print(meaned_matrix)
-    print("\nshape:", meaned_matrix.shape)
+    print()
 
 
 if __name__ == "__main__":
